@@ -29,10 +29,6 @@ const recommendationSchema = new mongoose.Schema(
   }
 );
 
-// Indexes
-// Finding recommendations quickly based on the mood string.
-recommendationSchema.index({ mood: 1 });
-
 const Recommendation = mongoose.model('Recommendation', recommendationSchema);
 
 module.exports = Recommendation;

@@ -1,0 +1,50 @@
+.mood-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mood-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.mood-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mood-emoji {
+  font-size: 1.5rem;
+}
+
+.mood-label {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #fff;
+}
+
+.mood-note {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+.mood-date {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Mood-specific accent borders */
+.mood-happy { border-left: 3px solid #f9ca24; }
+.mood-sad { border-left: 3px solid #74b9ff; }
+.mood-stressed { border-left: 3px solid #e94560; }
+.mood-energetic { border-left: 3px solid #00b894; }
+.mood-calm { border-left: 3px solid #a29bfe; }
+.mood-tired { border-left: 3px solid #636e72; }

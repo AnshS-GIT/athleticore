@@ -1,0 +1,77 @@
+.recommendations-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.recommendations-page h1 {
+  font-size: 1.75rem;
+  color: #fff;
+  margin: 0;
+}
+
+.rec-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Recommendation Results */
+.rec-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.rec-category {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.rec-category:hover {
+  transform: translateY(-2px);
+}
+
+.rec-category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rec-icon {
+  font-size: 1.5rem;
+}
+
+.rec-category h2 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0;
+}
+
+.rec-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rec-item {
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  border-left: 3px solid rgba(233, 69, 96, 0.4);
+  transition: background 0.2s ease;
+}
+
+.rec-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
