@@ -12,8 +12,10 @@ connectDB();
 
 const app = express();
 
-// Global middleware
-app.use(cors());
+// Global middleware (Allow requests from deployed frontend domain)
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json());
 
 // Health check
