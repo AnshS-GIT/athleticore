@@ -25,6 +25,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/mood', require('./routes/moodRoutes'));
 app.use('/api/recommendations', require('./routes/recommendationRoutes'));
+app.use('/api/chatbot', require('./routes/chatbotRoutes'));
 
 // Global error handler (must be registered AFTER routes)
 app.use(errorMiddleware);

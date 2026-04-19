@@ -6,6 +6,8 @@ import DashboardPage from './pages/DashboardPage';
 import MoodPage from './pages/MoodPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import Chatbot from './components/Chatbot';
+import authService from './services/authService';
 
 function App() {
   return (
@@ -44,6 +46,9 @@ function App() {
         {/* Default redirect */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+
+      {/* Floating Chatbot — only visible when authenticated */}
+      {authService.isAuthenticated() && <Chatbot />}
     </Router>
   );
 }
