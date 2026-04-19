@@ -1,167 +1,109 @@
 # Use Case Diagram
 
 ```mermaid
-actor Athlete
-actor Coach
-actor Admin
+graph TB
+    subgraph AthletiCore["🏋️ AthletiCore System"]
 
-rectangle AthletiCore {
-    Athlete --> (Register / Login)
-    Athlete --> (Log Training Data)
-    Athlete --> (View Performance Insights)
-    Athlete --> (View Injury Risk)
-    Athlete --> (Get Training Recommendations)
+        UC1["Register Account"]
+        UC2["Login"]
+        UC3["Log Mood Entry"]
+        UC4["View Mood History"]
+        UC5["Get Recommendations"]
+        UC6["Use Chatbot"]
+        UC7["Logout"]
 
-    Coach --> (Login)
-    Coach --> (Create Team)
-    Coach --> (Add Players)
-    Coach --> (Monitor Athlete Performance)
-    Coach --> (Compare Players)
+    end
 
-    Admin --> (Manage Users)
-    Admin --> (Manage Teams)
-}
+    User((👤 User))
 
+    User --> UC1
+    User --> UC2
+    User --> UC3
+    User --> UC4
+    User --> UC5
+    User --> UC6
+    User --> UC7
 
----
+    UC3 -.->|"includes"| UC2
+    UC4 -.->|"includes"| UC2
+    UC5 -.->|"includes"| UC2
+    UC6 -.->|"includes"| UC2
 
-# sequenceDiagram.md
-
-```markdown
-# Sequence Diagram — Training Data Logging & Injury Prediction
-
-```mermaid
-sequenceDiagram
-    participant Athlete
-    participant Frontend
-    participant Controller
-    participant Service
-    participant Repository
-    participant Database
-    participant RiskEngine
-
-    Athlete->>Frontend: Submit training data
-    Frontend->>Controller: POST /training
-    Controller->>Service: validateTraining()
-    Service->>Repository: saveTraining()
-    Repository->>Database: Insert record
-    Database-->>Repository: Success
-
-    Service->>RiskEngine: calculateInjuryRisk()
-    RiskEngine-->>Service: Risk Score
-
-    Service-->>Controller: Response with risk
-    Controller-->>Frontend: Success + Risk Level
-    Frontend-->>Athlete: Show insights
-
+    UC6 -.->|"extends"| UC5
+    UC3 -.->|"extends"| UC5
+```
 
 ---
 
-# classDiagram.md
+## Use Case Descriptions
 
-```markdown
-# Class Diagram
+### UC1: Register Account
+- **Actor:** User
+- **Precondition:** User does not have an existing account
+- **Flow:**
+  1. User navigates to the Signup page
+  2. User enters name, email, and password
+  3. System validates input and checks for duplicate email
+  4. System hashes the password and creates the user record
+  5. System generates a JWT token and redirects to the Dashboard
+- **Postcondition:** User account is created and authenticated
 
-```mermaid
-classDiagram
+### UC2: Login
+- **Actor:** User
+- **Precondition:** User has a registered account
+- **Flow:**
+  1. User navigates to the Login page
+  2. User enters email and password
+  3. System validates credentials against the database
+  4. System generates a JWT token and redirects to the Dashboard
+- **Postcondition:** User is authenticated with a valid session token
 
-class User {
-  +String id
-  +String name
-  +String email
-  +String password
-  +Role role
-  +login()
-}
+### UC3: Log Mood Entry
+- **Actor:** User (authenticated)
+- **Precondition:** User is logged in
+- **Flow:**
+  1. User navigates to the Mood Input page
+  2. User selects a mood from the visual selector (happy, sad, stressed, energetic, calm, tired)
+  3. User optionally adds a text note
+  4. System stores the mood entry with a timestamp
+  5. System displays a success confirmation
+- **Postcondition:** Mood entry is saved in the database
 
-class Athlete {
-  +logTraining()
-  +viewInsights()
-}
+### UC4: View Mood History
+- **Actor:** User (authenticated)
+- **Precondition:** User is logged in
+- **Flow:**
+  1. User views the Dashboard or Mood Input page
+  2. System fetches the user's mood entries sorted by most recent
+  3. Mood entries are displayed as cards with emoji, mood label, note, and timestamp
+- **Postcondition:** User can see their historical mood data
 
-class Coach {
-  +createTeam()
-  +addPlayer()
-  +viewAnalytics()
-}
+### UC5: Get Recommendations
+- **Actor:** User (authenticated)
+- **Precondition:** User is logged in
+- **Flow:**
+  1. User navigates to the Recommendations page
+  2. User selects a mood type
+  3. System fetches recommendation data (DB-first with rule-based fallback)
+  4. System displays recommended activities, workouts, and music
+- **Postcondition:** User receives mood-specific recommendations
 
-class Admin {
-  +manageUsers()
-}
+### UC6: Use Chatbot
+- **Actor:** User (authenticated)
+- **Precondition:** User is logged in
+- **Flow:**
+  1. User clicks the floating chat button (💬)
+  2. Chatbot greets the user and asks how they are feeling
+  3. User types a mood or selects from mood option buttons
+  4. Chatbot responds with personalized recommendations inline
+  5. User can continue the conversation or close the chat
+- **Postcondition:** User receives recommendations via conversational interface
 
-class Team {
-  +String id
-  +String name
-  +addPlayer()
-  +removePlayer()
-}
-
-class TrainingRecord {
-  +distance
-  +heartRate
-  +trainingLoad
-  +sleepHours
-  +fatigueLevel
-}
-
-class InjuryRiskEngine {
-  +calculateRisk()
-}
-
-User <|-- Athlete
-User <|-- Coach
-User <|-- Admin
-
-Team "1" --> "*" Athlete
-Athlete "1" --> "*" TrainingRecord
-TrainingRecord --> InjuryRiskEngine
-
-
----
-
-# ErDiagram.md
-
-```markdown
-# ER Diagram
-
-```mermaid
-erDiagram
-
-USER {
-    string id
-    string name
-    string email
-    string password
-    string role
-}
-
-TEAM {
-    string id
-    string name
-    string coachId
-}
-
-ATHLETE {
-    string id
-    string userId
-    string teamId
-}
-
-TRAINING_RECORD {
-    string id
-    string athleteId
-    float distance
-    float sprintSpeed
-    int heartRate
-    int trainingLoad
-    int sleepHours
-    int fatigueLevel
-    date createdAt
-}
-
-USER ||--o{ ATHLETE : has
-TEAM ||--o{ ATHLETE : contains
-ATHLETE ||--o{ TRAINING_RECORD : logs
-
-
----
+### UC7: Logout
+- **Actor:** User (authenticated)
+- **Precondition:** User is logged in
+- **Flow:**
+  1. User clicks the Logout button in the Navbar
+  2. System clears the JWT token and user data from localStorage
+  3. User is redirected to the Login page
+- **Postcondition:** Session is terminated
