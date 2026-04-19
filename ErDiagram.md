@@ -1,40 +1,38 @@
-# ER Diagram
+# AthletiCore ER Diagram
 
 ```mermaid
 erDiagram
 
-USER {
-    string id
-    string name
-    string email
-    string password
-    string role
-}
+    USERS {
+        ObjectId _id PK
+        String name
+        String email "unique"
+        String password "hashed"
+        Date createdAt
+        Date updatedAt
+    }
 
-TEAM {
-    string id
-    string name
-    string coachId
-}
+    MOOD_ENTRIES {
+        ObjectId _id PK
+        ObjectId userId FK "Ref to USERS"
+        String mood "enum"
+        String note "optional"
+        Date createdAt
+    }
 
-ATHLETE {
-    string id
-    string userId
-    string teamId
-}
+    RECOMMENDATIONS {
+        ObjectId _id PK
+        String mood "unique, matched to MOOD_ENTRIES.mood"
+        StringArray activities
+        StringArray workouts
+        StringArray music
+    }
 
-TRAINING_RECORD {
-    string id
-    string athleteId
-    float distance
-    float sprintSpeed
-    int heartRate
-    int trainingLoad
-    int sleepHours
-    int fatigueLevel
-    date createdAt
-}
+    USERS ||--o{ MOOD_ENTRIES : creates
+    
+    %% Note: Recommendations are a global lookup map tied to the string value of 'mood'
+    %% It is not a direct foreign-key table map in the traditional relational sense unless mood itself is an entity.
+    %% We represent the conceptual link below.
+    MOOD_ENTRIES }o..|| RECOMMENDATIONS : "derives from (via mood string)"
 
-USER ||--o{ ATHLETE : has
-TEAM ||--o{ ATHLETE : contains
-ATHLETE ||--o{ TRAINING_RECORD : logs
+```
